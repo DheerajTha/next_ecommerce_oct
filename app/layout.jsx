@@ -1,14 +1,13 @@
+import GlobalProvider from "@/components/globalStore/globalProvider";
 import "./globals.css";
-import {Montserrat} from 'next/font/google'
-import { ToastContainer } from 'react-toastify';
-
+import { Montserrat } from "next/font/google";
+import { ToastContainer } from "react-toastify";
 
 const montserratFont = Montserrat({
-  subsets:['latin'],
-  weight:["400","500","600", "700", "800","900"],
-  display:'swap'
-})
-
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800", "900"],
+  display: "swap",
+});
 
 export const metadata = {
   title: "Create Next App",
@@ -18,11 +17,11 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body
-        className={` ${montserratFont.className} antialiased`}
-      >
-        <ToastContainer />
-        {children}
+      <body className={` ${montserratFont.className} antialiased`}>
+        <GlobalProvider>
+          <ToastContainer />
+          {children}
+        </GlobalProvider>
       </body>
     </html>
   );

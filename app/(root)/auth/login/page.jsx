@@ -18,12 +18,19 @@ import CustomButton from "@/components/Application/customButton";
 import z from "zod";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import Link from "next/link";
-import { WEBSITE_REGISTER } from "@/routes/WebsiteRoute";
+import { USER_DASHBOARD, WEBSITE_REGISTER, WEBSITE_RESET_PASSWORD } from "@/routes/WebsiteRoute";
 import axios from "axios";
 import { showToast } from "@/lib/showToast";
 import OtpValidation from "@/components/Application/otpValidation";
+import { useDispatch } from "react-redux";
+import { login } from "@/store/reducer/authReducer";
+import { useRouter, useSearchParams } from "next/navigation";
+import { ADMIN_DASHBOARD } from "@/routes/AdminPanelRoutes";
 
 const LoginPage = () => {
+  const disptach = useDispatch();
+  const searchParams = useSearchParams(); 
+  const router = useRouter()
   const [loading, setLoading] = useState(false);
   const [otpVerificationLoading, setOtpVerificationLoading] = useState(false);
   const [otpEmail, setOptEmail] = useState(false);
@@ -46,16 +53,16 @@ const LoginPage = () => {
   const handlerLoginSubmit = async (values) => {
     try {
       setLoading(true);
-      const { data: registerResponse } = await axios.post(
+      const { data: loginResponse } = await axios.post(
         "/api/auth/login",
         values
       );
-      if (!registerResponse.success) {
-        throw new Error(registerResponse.message);
+      if (!loginResponse.success) {
+        throw new Error(loginResponse.message);
       }
       setOptEmail(values.email);
       form.reset();
-      showToast("success", registerResponse.message);
+      showToast("success", loginResponse.message);
     } catch (error) {
       showToast("error", error.message);
     } finally {
@@ -69,15 +76,27 @@ const LoginPage = () => {
   const handleOtpVerification = async (values) =>{
 try {
       setOtpVerificationLoading(true);
-      const { data: registerResponse } = await axios.post(
+      const { data: otpResponse } = await axios.post(
         "/api/auth/verify-otp",
         values
       );
-      if (!registerResponse.success) {
-        throw new Error(registerResponse.message);
+      if (!otpResponse.success) {
+        throw new Error(otpResponse.message);
       }
       setOptEmail("");
-      showToast("success", registerResponse.message);
+      showToast("success", otpResponse.message);
+
+      disptach(login(otpResponse.data))
+
+      if(searchParams.has('callback')){
+        router.push(searchParams.get('callback'))
+      }
+      else{
+        otpResponse.data.role === 'admin' ? 
+        router.push(ADMIN_DASHBOARD)
+        : router.push(USER_DASHBOARD)
+      }
+
     } catch (error) {
       showToast("error", error.message);
     } finally {
@@ -175,7 +194,7 @@ try {
                     </div>
                     <div className="text-center">
                       <Link
-                        href=""
+                        href={WEBSITE_RESET_PASSWORD}
                         className="ml-3 text-md text-primary hover:text-black underline"
                       >
                         Forget Password{" "}
