@@ -55,21 +55,18 @@ export async function POST(request) {
 
     const encodedToken = encodeURIComponent(token);
 
-    // await sendMail('email verification request from Dheeraj Thakur',
-    // email, emailVerificationLink(`${process.env.NEXT_PUBLIC_BASE_URL}/auth/verify-email/${token}`))
-
-    await sendMail(
+    sendMail(
       "Email verification request from Dheeraj Thakur",
       email,
       emailVerificationLink(
         `${process.env.NEXT_PUBLIC_BASE_URL}/auth/verify-email/${encodedToken}`
       )
-    );
+    ).catch(err => console.error("Email send failed:", err));
 
     return response(
       true,
       200,
-      " registration successfull and email sent for verification"
+      "registration successful and verification email sent"
     );
   } catch (error) {
     catchError(error);

@@ -1,7 +1,7 @@
 import { emailVerificationLink } from "@/email/emailverificationlink";
 import { otpEmail } from "@/email/otpEmail";
 import { connectDB } from "@/lib/dbConnection";
-import { catchError, generateOTP } from "@/lib/helperFuncation";
+import { catchError, generateOTP, response } from "@/lib/helperFuncation";
 import { sendMail } from "@/lib/sendMail";
 import { zSchema } from "@/lib/zodSchema";
 import OTPModel from "@/models/otp.model";
@@ -33,7 +33,7 @@ export async function POST(request) {
     }
 
     const {email, password} = validatedData.data
-    const getUser = await UserModel.findOne({email})
+    const getUser = await UserModel.findOne({ deleted: null, email}).select("+password")
 
     if(!getUser){
       return response(false, 404 , "invalid credentials" )
@@ -83,11 +83,9 @@ export async function POST(request) {
 
     await newOtpData.save()
 
-    const otpEmailStatus  = await sendMail("OTP for login",
-        email, otpEmail(otp) )
-    if(!otpEmailStatus.success){
-      return response(false, 400 , "something went wrong while sending otp" )
-    }
+    sendMail("OTP for login", email, otpEmail(otp)).catch(err => 
+      console.error("Email send failed:", err)
+    )
 
     return response(true, 200 , "please verify your device ")
 

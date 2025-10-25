@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import { email } from "zod";
 
 const optSchema = new mongoose.Schema({
     email:{
@@ -20,6 +19,6 @@ const optSchema = new mongoose.Schema({
 
 optSchema.index({expireAt:1}, {expireAfterSeconds:0} )
 
-const OTPModel = mongoose.models.OTP || mongoose.model("OTp", optSchema, "otps")
+const OTPModel = mongoose.models.OTP || mongoose.model("OTP", optSchema, "otps")
 
 export default OTPModel
