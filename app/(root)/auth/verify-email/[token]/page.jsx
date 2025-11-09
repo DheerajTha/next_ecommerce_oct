@@ -40,8 +40,8 @@ const EmailVerification = ({ params }) => {
               <Image
                 src="/assets/images/verified.gif"
                 alt="verified"
-                width={300}
-                height={100}
+                width={400}
+                height={300}
                 unoptimized
               />
               <h1 className="text-xl font-bold text-green-500">

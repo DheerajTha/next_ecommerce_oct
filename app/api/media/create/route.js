@@ -15,7 +15,7 @@ export async function POST(request) {
 
     const data = Array.isArray(payload) ? payload : [payload]
 
-    const hasInvalid = data.some(item => !item.asset_id || !item.public_id || !item.path || !item.thumbnail_url)
+    const hasInvalid = data.some(item => !item.asset_id || !item.public_id || !item.path || !item.thumbnail_url || !item.secure_url)
     if (hasInvalid) {
       return response(false, 400, "Missing required fields")
     }

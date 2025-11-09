@@ -4,10 +4,10 @@ import { CldUploadWidget } from "next-cloudinary";
 import { Button } from "../ui/button";
 import { MdFilter9Plus } from "react-icons/md";
 import { showToast } from "@/lib/showToast";
-import { AiFillPlusSquare } from "react-icons/ai";
+import { CiSquarePlus } from "react-icons/ci";
 import axios from "axios";
 
-const UploadMedia = ({ isMultiple }) => {
+const UploadMedia = ({ isMultiple, queryClient }) => {
   const handleOnError = (error) => {
     showToast("error", error.statusText);
   };
@@ -20,6 +20,7 @@ const UploadMedia = ({ isMultiple }) => {
         public_id: file.uploadInfo.public_id,
         path: file.uploadInfo.path || file.uploadInfo.secure_url,
         thumbnail_url: file.uploadInfo.thumbnail_url || file.uploadInfo.secure_url,
+        secure_url: file.uploadInfo.secure_url
       }));
 
     if (uploadedFiles.length > 0) {
@@ -31,6 +32,7 @@ const UploadMedia = ({ isMultiple }) => {
         if (!mediaUploadResponse.success) {
           throw new Error(mediaUploadResponse.message);
         }
+        queryClient.invalidateQueries(['media-data'])
         showToast("success", mediaUploadResponse.message);
       } catch (error) {
         showToast("error", error.message);
@@ -56,9 +58,9 @@ const UploadMedia = ({ isMultiple }) => {
     >
       {({ open }) => {
         return (
-          <Button onClick={() => open()}>
-            <AiFillPlusSquare />
-            Upload an Image
+          <Button className="cursor-pointer" onClick={() => open()}>
+            <CiSquarePlus />
+            Upload Image
           </Button>
         );
       }}
