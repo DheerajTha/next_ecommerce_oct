@@ -74,7 +74,7 @@ const AppSidebar = () => {
                     <SidebarMenuSub>
                       {menu.submenu.map((submenu, submenuIndex) => (
                         <SidebarMenuSubItem key={submenuIndex}>
-                          <SidebarMenuSubButton>
+                          <SidebarMenuSubButton asChild>
                             <Link href={submenu?.url}>{submenu.title}</Link>
                           </SidebarMenuSubButton>
                         </SidebarMenuSubItem>

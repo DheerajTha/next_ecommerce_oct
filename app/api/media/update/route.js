@@ -1,5 +1,6 @@
+import { isAuthenticated } from "@/lib/authentic";
 import { connectDB } from "@/lib/dbConnection";
-import { catchError, isAuthenticated, response } from "@/lib/helperFuncation";
+import { catchError, response } from "@/lib/helperFuncation";
 import { zSchema } from "@/lib/zodSchema";
 import MediaModel from "@/models/media.model";
 import { isValidObjectId } from "mongoose";

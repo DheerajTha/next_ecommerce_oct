@@ -18,7 +18,10 @@ return useMutation({
     },
     onSuccess:(response) => {
         showToast('success', response.message)
-        queryClient.invalidateQueries([queryKey])
+        queryClient.invalidateQueries({
+            predicate: (query) => query.queryKey[0] === queryKey
+        })
+
     },
     onError: error => {
         showToast('error', error?.response?.data?.message || error.message )

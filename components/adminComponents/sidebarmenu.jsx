@@ -6,7 +6,7 @@ import { LuUserRound } from "react-icons/lu";
 import { IoMdStarOutline } from "react-icons/io";
 import { MdOutlinePermMedia } from "react-icons/md";
 import { RiCoupon2Line } from "react-icons/ri";
-import { ADMIN_DASHBOARD, ADMIN_MEDIA_SHOW } from "@/routes/AdminPanelRoutes";
+import { ADMIN_CATEGORY_ADD, ADMIN_CATEGORY_SHOW, ADMIN_DASHBOARD, ADMIN_MEDIA_SHOW } from "@/routes/AdminPanelRoutes";
 
 export const adminSideBarMenu = [
   {
@@ -21,11 +21,11 @@ export const adminSideBarMenu = [
     submenu: [
       {
         title: "Add Category",
-        url: "#",
+        url: ADMIN_CATEGORY_ADD,
       },
       {
         title: "All Category",
-        url: "#",
+        url: ADMIN_CATEGORY_SHOW,
       },
     ],
   },
