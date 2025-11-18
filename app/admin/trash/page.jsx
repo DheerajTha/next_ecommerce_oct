@@ -7,15 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { DT_CATEGORY_COLUMN } from "@/lib/colomn";
 import { colomnConfig } from "@/lib/helperFuncation";
-import {
-  ADMIN_CATEGORY_ADD,
-  ADMIN_CATEGORY_EDIT,
-  ADMIN_CATEGORY_SHOW,
-  ADMIN_DASHBOARD,
-  ADMIN_TRASH,
-} from "@/routes/AdminPanelRoutes";
-import { FilePlus } from "lucide-react";
-import Link from "next/link";
+import { ADMIN_DASHBOARD, ADMIN_TRASH } from "@/routes/AdminPanelRoutes";
 import { useSearchParams } from "next/navigation";
 import React, { useCallback, useMemo } from "react";
 
@@ -26,34 +18,43 @@ const breadCrumbData = [
 
 const TRASH_CONFIG = {
   category: {
-    title: 'Category Trash',
+    title: "Category Trash",
     columns: DT_CATEGORY_COLUMN,
-    fetchUrl: '/api/category',
-    exportUrl: '/api/category/export',
-    deleteUrl: '/api/category/delete '
-  }
-}
+    fetchUrl: "/api/category",
+    exportUrl: "/api/category/export",
+    deleteUrl: "/api/category/delete",
+  },
+};
 
 const Trash = () => {
+  const searchPararms = useSearchParams();
+  const trashOf = searchPararms.get("trashof") || "category";
 
-  const searchPararms = useSearchParams()
-  const trashOf= searchPararms.get('trashof')
-
-  const config = TRASH_CONFIG[trashOf]
+  const config = TRASH_CONFIG[trashOf] || null;
+  if (!config) {
+    return (
+      <div className="p-5 text-center text-red-500">
+        Invalid or missing <strong>trashof</strong> parameter.
+        <br />
+        Example: /admin/trash?trashof=category
+      </div>
+    );
+  }
 
   const column = useMemo(() => {
-    return colomnConfig(config.columns, false, false, true);
-  }, []);
+    return colomnConfig(config?.columns || [], false, false, true);
+  }, [config]);
 
   const action = useCallback((row, deleteType, handleDelete) => {
-      return [<DeleteAction
-          key="delete"
-          handleDelete={handleDelete}
-          row={row}
-          deleteType={deleteType}
-        />]
-    },
-    []);
+    return [
+      <DeleteAction
+        key="delete"
+        handleDelete={handleDelete}
+        row={row}
+        deleteType={deleteType}
+      />,
+    ];
+  }, []);
 
   return (
     <div>
@@ -62,18 +63,17 @@ const Trash = () => {
       <Card className="py-3 rounded shadow-md">
         <CardHeader className="border-b-1 pb-4 ">
           <div className="flex justify-between items-center">
-            <h4 className="font-semibold text-xl"> {config.title} </h4>
-            
+            <h4 className="font-semibold text-xl"> {config?.title} </h4>
           </div>
         </CardHeader>
         <CardContent className="mb-2 px-0">
           <DataTableWrapper
             queryKey={`${trashOf}-data-deleted`}
-            fetchUrl={config.fetchUrl}
+            fetchUrl={config?.fetchUrl}
             initialPageSize={10}
             columnsConfig={column}
-            exportEndPoint={config.exportUrl}
-            deleteEndPoint={config.deleteUrl}
+            exportEndPoint={config?.exportUrl}
+            deleteEndPoint={config?.deleteUrl}
             deleteType="PD"
             createAction={action}
           />

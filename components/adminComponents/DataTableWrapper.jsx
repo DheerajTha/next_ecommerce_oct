@@ -1,9 +1,14 @@
 "use client";
 import { ThemeProvider } from "@mui/material";
-import React, { use, useEffect, useState } from "react";
-import DataTable from "./DataTable";
+import React, { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
 import { useTheme } from "next-themes";
 import { darkTheme, lightTheme } from "@/lib/materialTheme";
+
+const DataTable = dynamic(() => import("./DataTable"), {
+  loading: () => <div className="p-4">Loading table...</div>,
+  ssr: true,
+});
 
 const DataTableWrapper = ({
   queryKey,

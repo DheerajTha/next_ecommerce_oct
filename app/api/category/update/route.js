@@ -23,8 +23,7 @@ export async function PUT(request) {
     if(!validate.success){
       return response(false, 400, "invalid or missing fileds");
     }
-    console.log(validate.data);
-
+ 
     const {_id,name, slug} = validate.data;
 
     const getCategory = await CATEGORYModel.findOne({ deletedAt:null,_id })

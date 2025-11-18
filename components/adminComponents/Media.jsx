@@ -97,7 +97,9 @@ const MediaShow = ({  media,  handleDelete,  deleteType,  selectedMedia,  setSel
             src={media?.secure_url}
             alt={media?.alt || "image"}
             fill
+            sizes="(max-width: 640px) 120px, 150px"
             className="object-cover"
+            loading="lazy"
           />
         </div>
       </div>

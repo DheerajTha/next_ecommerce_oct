@@ -28,9 +28,8 @@ const breadCrumbData = [
 ];
 
 const EditPage = ({ params }) => {
-  const { id } = use(params); // <-- no need for use() here
+  const { id } = use(params); 
   const { data: mediaData } = useFetch(`/api/media/get/${id}`);
-  console.log("mediaData", mediaData);
   const [loading, setLoading] = useState(false);
 
   const formSchema = zSchema.pick({

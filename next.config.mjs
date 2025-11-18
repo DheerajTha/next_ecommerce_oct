@@ -8,8 +8,11 @@ const nextConfig = {
             pathname: '/**',
             search: ''  
             }
-        ]
-    }
+        ],
+        formats: ['image/webp', 'image/avif'],
+        unoptimized: false,
+    },
+    
 };
 
 export default nextConfig;

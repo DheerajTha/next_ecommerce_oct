@@ -184,7 +184,6 @@ const RegisterPage = () => {
               </div>
               {/* <Button type="submit">Submit</Button> */}
               <CustomButton
-                loading={loading}
                 className="w-full cursor-pointer text-lg py-6 px-5"
                 type="submit"
                 text="Submit"

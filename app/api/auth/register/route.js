@@ -28,7 +28,7 @@ export async function POST(request) {
       );
     }
     const { name, email, password } = validatedData.data;
-    console.log(validatedData);
+
     // check already registered user
     const checkUser = await UserModel.exists({ email });
 

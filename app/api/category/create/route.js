@@ -23,7 +23,6 @@ export async function POST(request) {
     if(!validate.success){
       return response(false, 400, "invalid or missing fileds");
     }
-    console.log(validate.data);
 
     const {name, slug} = validate.data;
 
