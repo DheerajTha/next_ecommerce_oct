@@ -1,7 +1,7 @@
 import { isAuthenticated } from "@/lib/authentic";
 import { connectDB } from "@/lib/dbConnection";
 import { catchError, response } from "@/lib/helperFuncation";
-import ProductModel from "@/models/product.model";
+import ProductVariantModel from "@/models/productVariant.model";
 import { NextResponse } from "next/server";
 
 export async function GET(request) {
@@ -114,8 +114,8 @@ export async function GET(request) {
     ];
 
     const [getProduct, totalRowCount] = await Promise.all([
-      ProductModel.aggregate(aggregatePipeline).allowDiskUse(true),
-      ProductModel.countDocuments(matchQuery).lean(),
+      ProductVariantModel.aggregate(aggregatePipeline).allowDiskUse(true),
+      ProductVariantModel.countDocuments(matchQuery).lean(),
     ]);
 
     return NextResponse.json({
