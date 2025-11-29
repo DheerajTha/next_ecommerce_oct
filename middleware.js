@@ -18,7 +18,7 @@ export async function middleware(request) {
     return NextResponse.next();
   }
 
-  // ✔️ TOKEN EXISTS → VERIFY
+  // TOKEN EXISTS → VERIFY
   try {
     const { payload } = await jwtVerify(
       token,
@@ -27,21 +27,21 @@ export async function middleware(request) {
 
     const role = payload?.role;
 
-    // -------- 🟦 Auth pages should not open when logged in ----------
+    // -------- Auth pages should not open when logged in ----------
     if (pathname.startsWith("/auth")) {
       return NextResponse.redirect(
         new URL(role === "admin" ? ADMIN_DASHBOARD : USER_DASHBOARD, request.url)
       );
     }
 
-    // -------- 🟥 Protect admin area ----------
+    // -------- Protect admin area ----------
     if (pathname.startsWith("/admin")) {
       if (role !== "admin") {
         return NextResponse.redirect(new URL(WEBSITE_LOGIN, request.url));
       }
     }
 
-    // -------- 🟩 Protect user area ----------
+    // --------  Protect user area ----------
     if (pathname.startsWith("/my-account")) {
       if (role !== "user") {
         return NextResponse.redirect(new URL(WEBSITE_LOGIN, request.url));

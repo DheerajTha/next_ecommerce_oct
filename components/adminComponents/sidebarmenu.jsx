@@ -6,7 +6,7 @@ import { LuUserRound } from "react-icons/lu";
 import { IoMdStarOutline } from "react-icons/io";
 import { MdOutlinePermMedia } from "react-icons/md";
 import { RiCoupon2Line } from "react-icons/ri";
-import { ADMIN_CATEGORY_ADD, ADMIN_CATEGORY_SHOW, ADMIN_DASHBOARD, ADMIN_MEDIA_SHOW } from "@/routes/AdminPanelRoutes";
+import { ADMIN_CATEGORY_ADD, ADMIN_CATEGORY_SHOW, ADMIN_DASHBOARD, ADMIN_MEDIA_SHOW, ADMIN_PRODUCT_ADD, ADMIN_PRODUCT_SHOW, ADMIN_PRODUCT_VARIANT_ADD, ADMIN_PRODUCT_VARIANT_SHOW } from "@/routes/AdminPanelRoutes";
 
 export const adminSideBarMenu = [
   {
@@ -36,19 +36,19 @@ export const adminSideBarMenu = [
     submenu: [
       {
         title: "Add Product",
-        url: "#",
+        url: ADMIN_PRODUCT_ADD
       },
       {
         title: "Add Variant",
-        url: "#",
+        url:  ADMIN_PRODUCT_VARIANT_ADD,
       },
       {
         title: "All Variant",
-        url: "#",
+        url: ADMIN_PRODUCT_VARIANT_SHOW,
       },
       {
         title: "All Product",
-        url: "#",
+        url: ADMIN_PRODUCT_SHOW ,
       },
     ],
   },

@@ -178,6 +178,7 @@ try {
                   {/* <Button type="submit">Submit</Button> */}
                   <CustomButton
                     className="w-full cursor-pointer text-lg py-6 px-5"
+                    loading={loading}
                     type="submit"
                     text="Login"
                   />

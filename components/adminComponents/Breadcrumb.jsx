@@ -36,4 +36,4 @@ const Breadcrumbs = ({breadCrumbData}) => {
   );
 };
 
-export default Breadcrumbs;
+export default React.memo(Breadcrumbs);

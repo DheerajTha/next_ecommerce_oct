@@ -25,9 +25,10 @@ export async function GET(request){
             filter= {deleteAt: {$ne:null}}
         }
 
-        const mediaData = await MediaModel.find(filter).sort({created: -1}).skip(page * limit).limit(limit).lean()
-
-        const totalMedia = await MediaModel.countDocuments(filter)
+        const [mediaData, totalMedia] = await Promise.all([
+            MediaModel.find(filter).sort({created: -1}).skip(page * limit).limit(limit).lean(),
+            MediaModel.countDocuments(filter).lean()
+        ])
 
         return NextResponse.json({
             mediaData:mediaData,
