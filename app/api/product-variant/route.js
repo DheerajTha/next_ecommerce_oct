@@ -30,45 +30,56 @@ export async function GET(request) {
     // global search
     if (globalFilter) {
       matchQuery["$or"] = [
-        { name: { $regex: globalFilter, $options: "i" } },
-        { slug: { $regex: globalFilter, $options: "i" } },
-        { "productData.name": { $regex: globalFilter, $options: "i" } },
-        { $expr:{
-          $regexMatch:{
-            input: {$toString: '$mrp'},
-            regex: globalFilter,
-            options: 'i'
-          }
-        }},
-        { $expr:{
-          $regexMatch:{
-            input: {$toString: '$sellingPrice'},
-            regex: globalFilter,
-            options: 'i'
-          }
-        }},
-        { $expr:{
-          $regexMatch:{
-            input: {$toString: '$discountPercentage'},
-            regex: globalFilter,
-            options: 'i'
-          }
-        }}
-
+        { color: { $regex: globalFilter, $options: "i" } },
+  { size: { $regex: globalFilter, $options: "i" } },
+  { sku: { $regex: globalFilter, $options: "i" } },
+  { "productData.name": { $regex: globalFilter, $options: "i" } },
+        {
+          $expr: {
+            $regexMatch: {
+              input: { $toString: "$mrp" },
+              regex: globalFilter,
+              options: "i",
+            },  
+          },
+        },
+        {
+          $expr: {
+            $regexMatch: {
+              input: { $toString: "$sellingPrice" },
+              regex: globalFilter,
+              options: "i",
+            },
+          },
+        },
+        {
+          $expr: {
+            $regexMatch: {
+              input: { $toString: "$discountPercentage" },
+              regex: globalFilter,
+              options: "i",
+            },
+          },
+        },
       ];
-    } 
+    }
 
     // column filters
     filters.forEach((filter) => {
-    if(filter.id === 'mrp' || filter.id === 'sellingPrice' || filter.id === 'discountPercentage') {
-          matchQuery[filter.id] = Number(filter.value);
-    } else if(filter.id === 'product'){
-      matchQuery['productData.name'] = { $regex: filter.value, $options: "i" };
-    }
-    else{
-            matchQuery[filter.id] = { $regex: filter.value, $options: "i" };
-
-    }    
+      if (
+        filter.id === "mrp" ||
+        filter.id === "sellingPrice" ||
+        filter.id === "discountPercentage"
+      ) {
+        matchQuery[filter.id] = Number(filter.value);
+      } else if (filter.id === "product") {
+        matchQuery["productData.name"] = {
+          $regex: filter.value,
+          $options: "i",
+        };
+      } else {
+        matchQuery[filter.id] = { $regex: filter.value, $options: "i" };
+      }
     });
 
     // sorting
@@ -80,12 +91,13 @@ export async function GET(request) {
     const aggregatePipeline = [
       {
         $lookup: {
-          from: "products",
+          from: "productVariants",
           localField: "product",
           foreignField: "_id",
           as: "productData",
         },
       },
+
       {
         $unwind: {
           path: "$productData",
@@ -100,6 +112,7 @@ export async function GET(request) {
         $project: {
           _id: 1,
           product: "$productData.name",
+          productName: "$productData.name",
           color: 1,
           size: 1,
           sku: 1,
@@ -113,10 +126,31 @@ export async function GET(request) {
       },
     ];
 
-    const [getProduct, totalRowCount] = await Promise.all([
+    const countPipeline = [
+      {
+        $lookup: {
+          from: "productVariants",
+          localField: "product",
+          foreignField: "_id",
+          as: "productData",
+        },
+      },
+      {
+        $unwind: {
+          path: "$productData",
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      { $match: matchQuery },
+      { $count: "total" },
+    ];
+
+    const [getProduct, countResult] = await Promise.all([
       ProductVariantModel.aggregate(aggregatePipeline).allowDiskUse(true),
-      ProductVariantModel.countDocuments(matchQuery).lean(),
+      ProductVariantModel.aggregate(countPipeline).allowDiskUse(true),
     ]);
+
+    const totalRowCount = countResult[0]?.total || 0;
 
     return NextResponse.json({
       success: true,

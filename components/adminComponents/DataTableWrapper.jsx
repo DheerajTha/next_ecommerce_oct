@@ -7,7 +7,7 @@ import { darkTheme, lightTheme } from "@/lib/materialTheme";
 
 const DataTable = dynamic(() => import("./DataTable"), {
   loading: () => <div className="p-4">Loading table...</div>,
-  ssr: true,
+  ssr: false,
 });
 
 const DataTableWrapper = ({

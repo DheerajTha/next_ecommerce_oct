@@ -1,5 +1,6 @@
 import { isAuthenticated } from "@/lib/authentic";
 import { connectDB } from "@/lib/dbConnection";
+import mongoose from "mongoose";
 import { catchError, response } from "@/lib/helperFuncation";
 import { zSchema } from "@/lib/zodSchema";
 import ProductVariantModel from "@/models/productVariant.model";
@@ -46,14 +47,16 @@ export async function POST(request) {
     const variantData = validate.data;
 
     const newProductVariant = new ProductVariantModel({
-      product:variantData.product,
+      product:new mongoose.Types.ObjectId(variantData.product),
       color:variantData.color,
       sku:variantData.sku,
       size:variantData.size,
       mrp:variantData.mrp,
       sellingPrice:variantData.sellingPrice,
       discountPercentage:variantData.discountPercentage,
-      media:variantData.media,
+      media: variantData.media.map(
+    (id) => new mongoose.Types.ObjectId(id)
+  ),
     });
     await newProductVariant.save();
     return response(true, 200, "Product Variant added successfully");

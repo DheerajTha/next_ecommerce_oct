@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import { resumeAndPrerender } from "react-dom/static";
 
 const productVariantSchema = new mongoose.Schema(
   {
