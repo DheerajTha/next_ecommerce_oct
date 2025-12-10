@@ -1,7 +1,8 @@
 import { isAuthenticated } from "@/lib/authentic";
 import { connectDB } from "@/lib/dbConnection";
 import { catchError, response } from "@/lib/helperFuncation";
-import ProductModel from "@/models/product.model";
+import ProductVariantModel from "@/models/productVariant.model";
+import mongoose from "mongoose";
 
 export async function PUT(request) {
   try {
@@ -18,7 +19,7 @@ export async function PUT(request) {
       return response(false, 400, "Invalid or empty id list");
     }
 
-    const data = await ProductModel.find({ _id: { $in: ids } }).lean();
+    const data = await ProductVariantModel.find({ _id: { $in: ids } }).lean();
     if (!data) {
       return response(false, 404, "Data not found");
     }
@@ -28,13 +29,13 @@ export async function PUT(request) {
     }
     if (deleteType === "SD") {
       // soft delete
-      await ProductModel.updateMany(
+      await ProductVariantModel.updateMany(
         { _id: { $in: ids } },
         { $set: { deletedAt: new Date().toISOString() } }
       );
-      return response(true, " deleted successfully");
+      return response(true, 200, " deleted successfully");
     } else {
-      await ProductModel.updateMany(
+      await ProductVariantModel.updateMany(
         { _id: { $in: ids } },
         { $set: { deletedAt: null } }
       );
@@ -65,7 +66,7 @@ export async function DELETE(request) {
       return response(false, 400, "Invalid or empty id list");
     }
 
-    const data = await ProductModel.find({ _id: { $in: ids } }).lean();
+    const data = await ProductVariantModel.find({ _id: { $in: ids } }).lean();
 
     if (data.length === 0) {
       return response(false, 404, "Data not found");
@@ -79,7 +80,9 @@ export async function DELETE(request) {
       );
     }
 
-    await ProductModel.deleteMany({ _id: { $in: ids } });
+    const result = await ProductVariantModel.deleteMany({ _id: { $in: ids } });
+
+    console.log(`Attempted to delete ${ids.length} documents. Deleted count: ${result.deletedCount}`);
 
     return response(true, 200, "Data deleted permanently");
   } catch (error) {

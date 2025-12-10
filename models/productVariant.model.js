@@ -48,7 +48,6 @@ const productVariantSchema = new mongoose.Schema(
     deletedAt: {
       type: Date,
       default: null,
-      index: true,
     },
   },
   { timestamps: true }

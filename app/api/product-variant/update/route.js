@@ -2,8 +2,7 @@ import { isAuthenticated } from "@/lib/authentic";
 import { connectDB } from "@/lib/dbConnection";
 import { catchError, response } from "@/lib/helperFuncation";
 import { zSchema } from "@/lib/zodSchema";
-import ProductModel from "@/models/product.model";
-import { encode } from "entities";
+import ProductVariantModel from "@/models/productVariant.model";
 
 export async function PUT(request) {
   let payload;
@@ -18,16 +17,16 @@ export async function PUT(request) {
     await connectDB();
 
     const schema = zSchema.pick({
-      _id: true,
-      name: true,
-      slug: true,
-      category: true,
-      mrp: true,
-      sellingPrice: true,
-      discountPercentage: true,
-      description: true,
-      media: true,
-    });
+          _id: true,
+          product: true,
+          color: true,
+          sku: true,
+          size: true,
+          mrp: true, 
+          sellingPrice: true,
+          discountPercentage: true,
+          media:true,
+        });
 
     const validate = schema.safeParse(payload);
     if (!validate.success) {
@@ -36,27 +35,27 @@ export async function PUT(request) {
 
     const validatedData = validate.data;
 
-    const getProduct = await ProductModel.findOne({
+    const getProductVariant = await ProductVariantModel.findOne({
       deletedAt: null,
       _id: validatedData._id,
     });
 
-    if (!getProduct) {
+    if (!getProductVariant) {
       return response(false, 404, "Data Not Found");
     }
 
-    getProduct.name = validatedData.name;
-    getProduct.slug = validatedData.slug;
-    getProduct.category = validatedData.category;
-    getProduct.mrp = validatedData.mrp;
-    getProduct.sellingPrice = validatedData.sellingPrice;
-    getProduct.discountPercentage = validatedData.discountPercentage;
-    getProduct.description = encode(validatedData.description);
-    getProduct.media = validatedData.media;
+    getProductVariant.product = validatedData.product;
+    getProductVariant.color = validatedData.color;
+    getProductVariant.size = validatedData.size;
+    getProductVariant.sku = validatedData.sku;
+    getProductVariant.mrp = validatedData.mrp;
+    getProductVariant.sellingPrice = validatedData.sellingPrice;
+    getProductVariant.discountPercentage = validatedData.discountPercentage;
+    getProductVariant.media = validatedData.media;
 
-    await getProduct.save();
+    await getProductVariant.save();
 
-    return response(true, 200, "Product updated successfully");
+    return response(true, 200, "Product Variant updated successfully");
   } catch (error) {
     return catchError(error);
   }

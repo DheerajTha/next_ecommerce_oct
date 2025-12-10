@@ -1,7 +1,7 @@
 import { isAuthenticated } from "@/lib/authentic";
 import { connectDB } from "@/lib/dbConnection";
 import { catchError, response } from "@/lib/helperFuncation";
-import ProductModel from "@/models/product.model";
+import ProductVariantModel from "@/models/productVariant.model";
 
 
 export async function GET(request) {
@@ -18,13 +18,13 @@ export async function GET(request) {
             deletedAt: null
         }
         
-        const getCategory = await ProductModel.find(filter).select('-media -description').sort({createdAt: -1}).lean()
+        const getCategoryVaraint = await ProductVariantModel.find(filter).select(' -media').sort({createdAt: -1}).lean()
 
-        if(!getCategory){
+        if(!getCategoryVaraint){
             return response(true, 200 , 'No category found')
         }
 
-        return response(true, 200 , 'data fetch successfully', getCategory)
+        return response(true, 200 , 'data fetch successfully', getCategoryVaraint)
 
     } catch (error) {
         return catchError(error)
