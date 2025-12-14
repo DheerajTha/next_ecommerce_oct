@@ -92,7 +92,7 @@ const MediaShow = ({  media,  handleDelete,  deleteType,  selectedMedia,  setSel
           </DropdownMenu>
         </div>
 
-        <div className="w-full h-[150px] sm:h-[120px] relative">
+        <div className="w-full h-[150px] sm:h-[220px] relative">
           <Image
             src={media?.secure_url}
             alt={media?.alt || "image"}
