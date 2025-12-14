@@ -9,8 +9,9 @@ import Searchbar from "./searchbar";
 const Topbar = () => {
   const { toggleSidebar } = useSidebar();
   return (
-    <div className="fixed border h-16 w-full top-0 left-0 z-40 md:pl-72 flex justify-between items-center bg-white dark:bg-card pl-7 md:pr-0">
-      <div className=""> <Searchbar/> </div>
+    <div className="fixed border-b-1 h-16 w-full top-0 left-0 z-40 md:pl-72 flex justify-between items-center bg-white dark:bg-card pl-7 md:pr-0">
+      {/* <div className=""> <Searchbar/> </div> */}
+      <div></div>
       <div className="flex items-center gap-3 pr-10 ">
         <ThemeSwitch />
         <UserDropDown />
