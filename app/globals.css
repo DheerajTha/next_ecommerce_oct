@@ -126,3 +126,21 @@
 .ck.ck-balloon-panel.ck-balloon-panel_visible {
     display: none !important;
 }
+
+:is(.swiper-button-prev, .swiper-button-next) svg {
+    object-fit: contain;
+    transform-origin: center;
+    fill: white;
+    pointer-events: none;
+    width: 100%;
+    height: 100%;
+}
+
+:is(.swiper-button-prev, .swiper-button-next) svg {
+    object-fit: contain;
+    transform-origin: center;
+    fill: white;
+    pointer-events: none;
+    width: 100%;
+    height: 100%;
+}

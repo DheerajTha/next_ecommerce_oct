@@ -3,7 +3,7 @@ import "./globals.css";
 import { Montserrat } from "next/font/google";
 import { ToastContainer } from "react-toastify";
 
-const montserratFont = Montserrat({
+const montserrat = Montserrat({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800", "900"],
   display: "swap",
@@ -16,8 +16,8 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className={` ${montserratFont.className} antialiased`}>
+    <html className={montserrat.variable}>
+      <body >
         <GlobalProvider>
           <ToastContainer />
           {children}
