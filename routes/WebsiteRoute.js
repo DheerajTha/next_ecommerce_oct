@@ -5,3 +5,5 @@ export const WEBSITE_FORGOT_PASSWORD = '/auth/forgot-password'
 export const WEBSITE_RESET_PASSWORD = '/auth/reset-password'
 
 export const USER_DASHBOARD = '/my-account'
+
+export const WEBSITE_SHOP = '/shop'

@@ -4,6 +4,7 @@ import {
   USER_DASHBOARD,
   WEBSITE_HOME,
   WEBSITE_LOGIN,
+  WEBSITE_SHOP,
 } from "@/routes/WebsiteRoute";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
@@ -19,13 +20,12 @@ const Header = () => {
   const [mobileMenu, setMobileMenu] = useState(false);
 
   useEffect(() => {
-  const handleEsc = (e) => {
-    if (e.key === "Escape") setOpenSearch(false);
-  };
-  window.addEventListener("keydown", handleEsc);
-  return () => window.removeEventListener("keydown", handleEsc);
-}, []);
-
+    const handleEsc = (e) => {
+      if (e.key === "Escape") setOpenSearch(false);
+    };
+    window.addEventListener("keydown", handleEsc);
+    return () => window.removeEventListener("keydown", handleEsc);
+  }, []);
 
   return (
     <>
@@ -51,15 +51,18 @@ const Header = () => {
             {/* DESKTOP NAV */}
             <nav className="hidden md:flex">
               <ul className="flex gap-10 text-sm font-medium text-gray-600">
-                {["Home", "About", "T-Shirt", "Hoodies", "OverSizes"].map(
-                  (item) => (
-                    <li key={item}>
-                      <Link href="#" className="hover:text-blue-600 transition">
-                        {item}
-                      </Link>
-                    </li>
-                  )
-                )}
+                {[
+                  { label: "Home", href: "/" },
+                  { label: "About", href: "/about" },
+                  { label: "Shop", href: WEBSITE_SHOP },
+                  { label: "T-Shirt", href: "/category/t-shirt" },
+                  { label: "Hoodies", href: "/category/hoodies" },
+                  { label: "OverSizes", href: "/category/oversizes" },
+                ].map((item) => (
+                  <li key={item} className="hover:text-blue-600 transition">
+                    <Link href="#">{item}</Link>
+                  </li>
+                ))}
               </ul>
             </nav>
 
@@ -72,7 +75,7 @@ const Header = () => {
                 <FiSearch size={20} />
               </button>
 
-          <Cart count={2} onClick={() => console.log("Open cart drawer")} />
+              <Cart count={2} onClick={() => console.log("Open cart drawer")} />
 
               {!auth ? (
                 <Link
@@ -104,52 +107,51 @@ const Header = () => {
 
       {/* SEARCH OVERLAY */}
       <AnimatePresence>
-  {openSearch && (
-    <motion.div
-      className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-start justify-center pt-28 px-4"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      onClick={() => setOpenSearch(false)}
-    >
-      <motion.div
-        onClick={(e) => e.stopPropagation()}
-        className="bg-white w-full max-w-xl rounded-2xl p-6 shadow-2xl"
-        initial={{ scale: 0.9, y: -30, opacity: 0 }}
-        animate={{ scale: 1, y: 0, opacity: 1 }}
-        exit={{ scale: 0.9, y: -30, opacity: 0 }}
-        transition={{ type: "spring", stiffness: 140, damping: 18 }}
-      >
-        <div className="flex items-center justify-between mb-5">
-          <h2 className="text-lg font-semibold text-gray-800">
-            Search Products
-          </h2>
-          <button
+        {openSearch && (
+          <motion.div
+            className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-start justify-center pt-28 px-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             onClick={() => setOpenSearch(false)}
-            className="text-gray-500 hover:text-gray-800"
           >
-            <FiX size={22} />
-          </button>
-        </div>
+            <motion.div
+              onClick={(e) => e.stopPropagation()}
+              className="bg-white w-full max-w-xl rounded-2xl p-6 shadow-2xl"
+              initial={{ scale: 0.9, y: -30, opacity: 0 }}
+              animate={{ scale: 1, y: 0, opacity: 1 }}
+              exit={{ scale: 0.9, y: -30, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 140, damping: 18 }}
+            >
+              <div className="flex items-center justify-between mb-5">
+                <h2 className="text-lg font-semibold text-gray-800">
+                  Search Products
+                </h2>
+                <button
+                  onClick={() => setOpenSearch(false)}
+                  className="text-gray-500 hover:text-gray-800"
+                >
+                  <FiX size={22} />
+                </button>
+              </div>
 
-        <div className="relative">
-          <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
-          <input
-            autoFocus
-            type="text"
-            placeholder="Search for T-Shirts, Hoodies, Oversized..."
-            className="w-full pl-11 pr-4 py-3 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
+              <div className="relative">
+                <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                <input
+                  autoFocus
+                  type="text"
+                  placeholder="Search for T-Shirts, Hoodies, Oversized..."
+                  className="w-full pl-11 pr-4 py-3 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
 
-        <p className="text-xs text-gray-400 mt-3">
-          Press <kbd className="border px-1 rounded">ESC</kbd> to close
-        </p>
-      </motion.div>
-    </motion.div>
-  )}
-</AnimatePresence>
-
+              <p className="text-xs text-gray-400 mt-3">
+                Press <kbd className="border px-1 rounded">ESC</kbd> to close
+              </p>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* MOBILE MENU */}
       <AnimatePresence>
@@ -177,13 +179,18 @@ const Header = () => {
               </div>
 
               <ul className="space-y-4 text-gray-700">
-                {["Home", "About", "T-Shirt", "Hoodies", "OverSizes"].map(
-                  (item) => (
-                    <li key={item} className="hover:text-blue-600">
-                      <Link href="#">{item}</Link>
-                    </li>
-                  )
-                )}
+                {[
+                  { label: "Home", href: "/" },
+                  { label: "About", href: "/about" },
+                  { label: "Shop", href: WEBSITE_SHOP },
+                  { label: "T-Shirt", href: "/category/t-shirt" },
+                  { label: "Hoodies", href: "/category/hoodies" },
+                  { label: "OverSizes", href: "/category/oversizes" },
+                ].map((item) => (
+                  <li key={item} className="hover:text-blue-600">
+                    <Link href="#">{item}</Link>
+                  </li>
+                ))}
               </ul>
             </motion.div>
           </motion.div>
