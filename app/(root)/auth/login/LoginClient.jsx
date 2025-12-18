@@ -40,7 +40,7 @@ const LoginClient = () => {
       email: true,
     })
     .extend({
-      password: z.string().min("4", "password field is required"),
+      password: z.string().min(4, "Password must be at least 4 characters"),
     });
 
   const form = useForm({
