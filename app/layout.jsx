@@ -1,7 +1,7 @@
 import GlobalProvider from "@/components/globalStore/globalProvider";
 import "./globals.css";
 import { Montserrat } from "next/font/google";
-import { ToastContainer } from "react-toastify";
+import ToastProvider from "@/components/Application/ToastProvider";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -19,7 +19,7 @@ export default function RootLayout({ children }) {
     <html className={montserrat.variable}>
       <body >
         <GlobalProvider>
-          <ToastContainer />
+          <ToastProvider />
           {children}
         </GlobalProvider>
       </body>

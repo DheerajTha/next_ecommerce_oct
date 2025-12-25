@@ -28,9 +28,9 @@ const GlobalProvider = ({ children }) => {
   return (
     <QueryClientProvider client={queryClient}>
       <Provider store={store}> 
-        <PersistGate persistor={persistor} loading={<Loading />}>
+        {/* <PersistGate persistor={persistor} loading={<Loading />}> */}
           {children}
-        </PersistGate>
+        {/* </PersistGate> */}
       </Provider>
       {process.env.NODE_ENV === "development" && (
         <Suspense fallback={null}>
