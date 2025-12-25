@@ -23,7 +23,7 @@ import { USER_DASHBOARD, WEBSITE_REGISTER, WEBSITE_RESET_PASSWORD } from "@/rout
 export default function LoginWithSearchParams() {
   const dispatch = useDispatch();
   const router = useRouter();
-  const searchParams = useSearchParams(); // ✅ NOW SAFE
+  const searchParams = useSearchParams(); 
 
   const [loading, setLoading] = useState(false);
   const [otpVerificationLoading, setOtpVerificationLoading] = useState(false);
