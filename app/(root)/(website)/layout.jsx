@@ -4,9 +4,9 @@ import Header from '@/components/website/header'
 const layout = ({ children }) => {
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       <main>{children}</main>
-      <Footer/>
+      {/* <Footer/> */}
     </>
   )
 }
