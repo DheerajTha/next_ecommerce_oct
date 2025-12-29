@@ -3,7 +3,7 @@ import { USER_DASHBOARD, WEBSITE_LOGIN } from "./routes/WebsiteRoute";
 import { ADMIN_DASHBOARD } from "./routes/AdminPanelRoutes";
 import { jwtVerify } from "jose";
 
-export async function middleware(request) {
+export async function proxy(request) {
   const pathname = request.nextUrl.pathname;
 
   // Read cookie

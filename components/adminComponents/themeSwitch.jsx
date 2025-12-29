@@ -18,16 +18,16 @@ const ThemeSwitch = () => {
     <div>
       <DropdownMenu>
         <DropdownMenuTrigger asChild >
-          <Button type="button" variant="ghost">
+          <Button type="button" variant="ghost" className='cursor-pointer'>
             <IoSunnyOutline className="dark:hidden" />
             <IoMoonOutline className="hidden dark:block" />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent>
-          <DropdownMenuItem onClick={() => setTheme("light")}>
+        <DropdownMenuContent className='cursor-pointer'>
+          <DropdownMenuItem className='cursor-pointer' onClick={() => setTheme("light")}>
             Light
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setTheme("dark")}>
+          <DropdownMenuItem className='cursor-pointer' onClick={() => setTheme("dark")}>
             Dark
           </DropdownMenuItem>
           
